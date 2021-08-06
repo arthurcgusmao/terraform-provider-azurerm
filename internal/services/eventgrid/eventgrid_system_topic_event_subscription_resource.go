@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-10-15-preview/eventgrid"
-	"github.com/hashicorp/go-azure-helpers/response"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/azure"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/tf"
 	"github.com/hashicorp/terraform-provider-azurerm/internal/clients"
@@ -322,16 +321,12 @@ func resourceEventGridSystemTopicEventSubscriptionDelete(d *pluginsdk.ResourceDa
 
 	future, err := client.Delete(ctx, id.ResourceGroup, id.SystemTopic, id.Name)
 	if err != nil {
-		if response.WasNotFound(future.Response()) {
-			return nil
-		}
+
 		return fmt.Errorf("Error deleting Event Grid System Topic Event Subscription %q (System Topic %q): %+v", id.Name, id.SystemTopic, err)
 	}
 
 	if err = future.WaitForCompletionRef(ctx, client.Client); err != nil {
-		if response.WasNotFound(future.Response()) {
-			return nil
-		}
+
 		return fmt.Errorf("Error deleting Event Grid System Topic  Event Subscription %q (System Topic %q): %+v", id.Name, id.SystemTopic, err)
 	}
 

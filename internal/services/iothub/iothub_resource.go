@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2020-03-01/devices"
-	"github.com/hashicorp/go-azure-helpers/response"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/azure"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/tf"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/validate"
@@ -758,9 +757,7 @@ func resourceIotHubDelete(d *pluginsdk.ResourceData, meta interface{}) error {
 
 	future, err := client.Delete(ctx, id.ResourceGroup, id.Name)
 	if err != nil {
-		if response.WasNotFound(future.Response()) {
-			return nil
-		}
+
 		return err
 	}
 

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/privatedns/mgmt/2018-09-01/privatedns"
-	"github.com/hashicorp/go-azure-helpers/response"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/azure"
 	"github.com/hashicorp/terraform-provider-azurerm/helpers/tf"
 	"github.com/hashicorp/terraform-provider-azurerm/internal/clients"
@@ -174,9 +173,7 @@ func resourcePrivateDnsZoneVirtualNetworkLinkDelete(d *pluginsdk.ResourceData, m
 
 	etag := ""
 	if future, err := client.Delete(ctx, id.ResourceGroup, id.PrivateDnsZoneName, id.Name, etag); err != nil {
-		if response.WasNotFound(future.Response()) {
-			return nil
-		}
+
 		return fmt.Errorf("deleting Virtual Network Link %q (Private DNS Zone %q / Resource Group %q): %+v", id.Name, id.PrivateDnsZoneName, id.ResourceGroup, err)
 	}
 
